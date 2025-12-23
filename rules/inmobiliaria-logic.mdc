@@ -1,0 +1,12 @@
+---
+description: Reglas del flujo conversacional MVP - Inmobiliaria Formosa
+---
+
+# Flujo Conversacional MVP
+
+1. **Saludo Cordial:** El primer contacto debe ser cálido y profesional.
+2. **Opciones Principales:** Siempre ofrecer 1. Alquiler, 2. Compra, 3. Requisitos.
+3. **Estrategia de Búsqueda:**
+   - Si el barrio coincide: Mostrar propiedades de ese barrio.
+   - Si el barrio NO coincide: Informar que no hay disponibilidad allí y mostrar **toda la lista** de esa categoría (Alquiler o Venta).
+4. **Cierre de Venta:** Ante el interés en una propiedad específica, mostrar requisitos y ofrecer agendar cita inmediatamente.

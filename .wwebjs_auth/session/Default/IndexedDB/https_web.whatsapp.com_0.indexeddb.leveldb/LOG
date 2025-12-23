@@ -1,0 +1,12 @@
+2025/12/22-13:46:57.880 7ac Reusing MANIFEST C:\Users\ailin\OneDrive\Escritorio\chatbot-whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/22-13:46:57.881 7ac Recovering log #414
+2025/12/22-13:46:58.032 7ac Reusing old log C:\Users\ailin\OneDrive\Escritorio\chatbot-whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000414.log 
+2025/12/22-13:47:00.533 1d20 Level-0 table #420: started
+2025/12/22-13:47:00.633 1d20 Level-0 table #420: 767942 bytes OK
+2025/12/22-13:47:00.637 1d20 Delete type=0 #414
+2025/12/22-13:47:00.646 1d20 Manual compaction at level-0 from '\x00\x9d\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x9e\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/12/22-13:47:00.890 7ac Compacting 1@1 + 2@2 files
+2025/12/22-13:47:01.193 7ac Generated table #421@1: 70148 keys, 2256873 bytes
+2025/12/22-13:47:01.426 7ac Generated table #422@1: 26715 keys, 1040823 bytes
+2025/12/22-13:47:01.426 7ac Compacted 1@1 + 2@2 files => 3297696 bytes
+2025/12/22-13:47:01.427 7ac compacted to: files[ 0 0 2 0 0 0 0 ]

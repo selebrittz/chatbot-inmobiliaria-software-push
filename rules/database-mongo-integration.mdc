@@ -1,0 +1,26 @@
+---
+description: Reglas para la integración de MongoDB (Mongoose) y flujos de datos NoSQL
+globs: src/properties/schemas/*.ts, src/properties/services/*.ts
+---
+
+# Reglas de Persistencia NoSQL (Mongoose Layer)
+
+## 1. Modelado de Documentos (Schemas)
+A diferencia de SQL, aquí priorizamos la velocidad de lectura para el bot:
+- **Indexación:** Es obligatorio indexar los campos `type` (alquiler/venta) y `neighborhood` (barrio) para que el bot responda en milisegundos.
+- **Normalización de Texto:** Almacenar los barrios en minúsculas o usar índices `text` para permitir búsquedas globales.
+
+
+
+## 2. Lógica de Consulta (Fuzzy Search)
+Para el mercado de Formosa, el usuario puede escribir "San Fran" o "La Nueva". La regla de consulta debe ser:
+- **Regex Queries:** Utilizar expresiones regulares no sensibles a mayúsculas (`$options: 'i'`) en lugar de comparaciones exactas.
+- **Lean Queries:** Usar siempre `.lean()` en las consultas del `PropertiesService` para evitar la sobrecarga de los documentos de Mongoose.
+
+## 3. Manejo de Estados de Usuario (Session Store)
+Dado que MongoDB es excelente para documentos variables:
+- **Schema de Sesión:** Crear una colección `sessions` que guarde el historial de mensajes del usuario como un array de subdocumentos para dar contexto al bot (memoria a corto plazo).
+
+## 4. Transformación de Datos (View Formatting)
+- El `ChatbotService` no debe recibir documentos de Mongoose, sino objetos planos (POJOs).
+- La conversión de Precios (ARS/USD) se debe manejar mediante `virtuals` o métodos del Schema antes de enviarlos al `WhatsappService`.

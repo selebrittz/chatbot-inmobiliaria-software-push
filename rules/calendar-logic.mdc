@@ -1,0 +1,10 @@
+---
+description: Reglas para la integración con Google Calendar y agendamiento
+---
+
+# Reglas de Agendamiento (Google Calendar)
+
+1. **Selección de Días:** Ofrecer siempre los próximos 3 días hábiles (Lunes a Viernes).
+2. **Horarios:** Las visitas se agendan por defecto en bloques de 1 hora (ej: 10:00, 11:00, 16:00, 17:00).
+3. **Doble Invitación:** El evento debe crearse en el calendario de la inmobiliaria e incluir el email del cliente como invitado para que aparezca en el suyo.
+4. **Formato de Título:** Usar siempre: `Visita Propiedad: [Barrio] - [Nombre Cliente]`.

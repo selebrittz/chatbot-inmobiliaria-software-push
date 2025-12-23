@@ -1,0 +1,70 @@
+---
+description: Reglas de arquitectura MVC y Modularización para Chatbot NestJS + WhatsApp-web.js
+globs: src/**/*.ts
+---
+
+# Reglas de Arquitectura MVC Modular - Inmobiliaria Formosa
+
+## 1. Definición de Capas (MVC Pattern)
+Para mantener el proyecto escalable, se deben respetar las siguientes responsabilidades por capa:
+
+- **Model (Capa de Datos):** Ubicada en `properties/entities` y `properties/services`. Define la estructura de los inmuebles (Alquiler/Venta) y la lógica de base de datos.
+- **View (Capa de Interfaz):** En este caso, la "Vista" es el **WhatsApp Service**. Se encarga de formatear los mensajes de texto, enviar listas o medios (fotos de casas) al usuario final.
+- **Controller (Capa de Entrada):** Ubicada en `whatsapp/whatsapp.controller.ts` (Event Handler). Escucha los eventos de `whatsapp-web.js` y delega la lógica al procesador correspondiente.
+
+## 2. Estructura Modular de Archivos
+Cada módulo debe ser autosuficiente y comunicarse mediante inyección de dependencias.
+
+
+
+```text
+src/
+├── app.module.ts             # Registro de todos los módulos
+├── whatsapp/                 # Módulo de Infraestructura (Interface)
+│   ├── whatsapp.service.ts   # Cliente y métodos de envío
+│   ├── whatsapp.controller.ts# Listener de eventos (onMessage, onQR)
+│   └── whatsapp.module.ts
+├── chatbot/                  # Módulo de Orquestación (Controller Lógico)
+│   ├── chatbot.processor.ts  # Clasificador de intención (Alquiler/Venta)
+│   ├── chatbot.service.ts    # Manejo de flujo y estados
+│   └── chatbot.module.ts
+├── properties/               # Módulo de Negocio (Model)
+│   ├── properties.service.ts # Consultas por barrios (Centro, Circuito 5, etc.)
+│   ├── entities/             # Esquemas de Propiedades
+│   └── properties.module.ts
+└── database/                 # Conexión persistente
+
+3. Reglas de Comunicación entre Módulos
+WhatsApp → Chatbot: El WhatsappController recibe el mensaje y lo envía al ChatbotProcessor.
+
+Chatbot → Properties: El ChatbotService solicita datos al PropertiesService basándose en los filtros del usuario.
+
+Properties → Chatbot: Devuelve objetos de datos o arrays de propiedades.
+
+Chatbot → WhatsApp: El ChatbotService pide al WhatsappService que envíe el mensaje final formateado.
+
+4. Estándares de Implementación (TypeScript)
+Inyección de Dependencias
+Evitar el uso de clases estáticas. Todo debe ser inyectado vía constructor para facilitar tests unitarios.
+
+Tipado de Barrios (Formosa Context)
+Utilizar enums para evitar errores de escritura en la búsqueda:
+
+TypeScript
+
+export enum FormosaBarrios {
+  CENTRO = 'Centro',
+  SF = 'San Francisco',
+  LNF = 'La Nueva Formosa',
+  C5 = 'Circuito 5',
+  VDC = 'Villa del Carmen'
+}
+5. Manejo de Estado (Stateful MVC)
+Dado que WhatsApp es stateless por naturaleza, se debe implementar un "Session Manager" dentro del módulo chatbot para persistir en qué parte del flujo está el cliente (Ej: "Esperando presupuesto").
+
+Regla: Ninguna variable de estado debe vivir dentro del WhatsappService. El estado pertenece a la lógica del Chatbot.
+
+6. Anti-Blocking & UX
+Action Delay: Implementar un middleware que simule "Escribiendo..." (client.sendPresenceAvailable()).
+
+Data Validation: Usar DTOs para filtrar la entrada de datos antes de consultar el Modelo (DB).
